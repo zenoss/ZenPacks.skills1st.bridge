@@ -3,13 +3,13 @@
 # or saved.  Do not modify them directly here.
 # NB: PACKAGES is deprecated
 NAME = "ZenPacks.skills1st.bridge"
-VERSION = "1.0.3"
+VERSION = "1.0.4"
 AUTHOR = "Jane Curry"
 LICENSE = ""
 NAMESPACE_PACKAGES = ['ZenPacks', 'ZenPacks.skills1st']
 PACKAGES = ['ZenPacks', 'ZenPacks.skills1st', 'ZenPacks.skills1st.bridge']
 INSTALL_REQUIRES = []
-COMPAT_ZENOSS_VERS = ">=3.0"
+COMPAT_ZENOSS_VERS = ">=2.5"
 PREV_ZENPACK_NAME = ""
 # STOP_REPLACEMENTS
 ################################

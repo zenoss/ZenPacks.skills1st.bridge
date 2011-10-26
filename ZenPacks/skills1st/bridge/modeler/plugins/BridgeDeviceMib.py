@@ -41,8 +41,11 @@ class BridgeDeviceMib(SnmpPlugin):
 # Uncomment next 2 lines for debugging when modeling
         log.warn( "Get Data= %s", getdata )
         log.warn( "Table Data= %s", tabledata )
-        om = self.objectMap(getdata)
-        om.setHWSerialNumber = self.asmac(om.setHWSerialNumber)
-        om.setHWTag = "Number of ports = " + str(om.setHWTag)
-        return om
+        try:
+            om = self.objectMap(getdata)
+            om.setHWSerialNumber = self.asmac(om.setHWSerialNumber)
+            om.setHWTag = "Number of ports = " + str(om.setHWTag)
+            return om
+        except:
+            log.warn( " Error in getting data for BridgeDeviceMib modeler plugin" )
 

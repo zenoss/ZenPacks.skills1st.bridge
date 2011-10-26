@@ -23,7 +23,7 @@ class BridgeInterfaceMib(SnmpPlugin):
 #    which is a direct child of Device"
 #    compname = ""
     
-    # New classification stuff uses wait to help it determine what class a
+    # New classification stuff uses weight to help it determine what class a
     # device should be in. Higher weight pushes the device to towards the 
     # class were this plugin is defined.
     weight = 4
@@ -94,25 +94,32 @@ class BridgeInterfaceMib(SnmpPlugin):
 #   MIB and the interface table for standard MIB-2 data (like interface description and
 #   performance parameters).
 
-            om = self.objectMap(data)
-            om.RemoteAddress = self.asmac(om.RemoteAddress)
-            om.snmpindex = int(om.Port)
+            try:
+                om = self.objectMap(data)
+                om.RemoteAddress = self.asmac(om.RemoteAddress)
+                om.snmpindex = int(om.Port)
 # The BasePortIfIndex is found from the BaseTable where the Port number from
 # dot1dTpFdbEntry table matches the Port number from the dot1dBasePortEntry
 
+                for boid,bdata in BaseTable.items():
+                    try:
+                        if bdata['BasePort'] == om.Port:
+                            om.PortIfIndex = bdata.get('BasePortIfIndex', -1) 
+                    except (KeyError, IndexError, AttributeError), errorInfo:
+                        log.warn( ' Attribute error in BridgeInterfaceMib modeler plugin %s', errorInfo)
+                        continue
 
-            om.PortIfIndex = -1
-            for boid,bdata in BaseTable.items():
-               if bdata['BasePort'] == om.Port:
-                   om.PortIfIndex = bdata['BasePortIfIndex'] 
-
+# Unique id attribute is <local port>_<remote MAC address>
 # prepId function ensures that results are all unique - will add _1, _2 etc to achieve this
-            om.id = self.prepId("%s_%s" % (om.Port, om.RemoteAddress))
+                om.id = self.prepId("%s_%s" % (om.Port, om.RemoteAddress))
 
 # For lots of debugging, uncomment next 2 lines
 #            for key,value in om.__dict__.items():
 #               log.warn("om key =  %s, om value = %s", key,value)
 	    
+            except AttributeError, errorInfo:
+                log.warn( " Attribute error in BridgeInterfaceMib modeler plugin %s", errorInfo)
+                continue
             rm.append(om) 
         return rm
 
