@@ -33,10 +33,12 @@
 
         <th tal:replace="structure python:here.ZenTableManager.getTableHeader(tableName,'Port','Port', attributes='width=5%')"/>
         <th tal:replace="structure python:here.ZenTableManager.getTableHeader(tableName,'RemoteAddress','Remote MAC', attributes='width=15%')"/>
-        <th tal:replace="structure python:here.ZenTableManager.getTableHeader(tableName,'getRemoteInterface','Remote Interfaces', attributes='width=40%')"/>
+        <th tal:replace="structure python:here.ZenTableManager.getTableHeader(tableName,'getRemoteInterface','Remote Interfaces', attributes='width=30%')"/>
         <th tal:replace="structure python:here.ZenTableManager.getTableHeader(tableName,'getRemoteDevice','Remote Device', attributes='width=25%')"/>
 
-        <th tal:replace="structure python:here.ZenTableManager.getTableHeader(tableName,'PortStatus','Status', attributes='width=15%')"/>
+        <th tal:replace="structure python:here.ZenTableManager.getTableHeader(tableName,'PortStatus','Status Value ', attributes='width=15%')"/>
+
+        <th tal:replace="structure python:here.ZenTableManager.getTableHeader(tableName,'PortStatus','Port Status', attributes='width=15')"/>
     </tr>
     <tr tal:condition="not:objects">
         <th class="tableheader" align="left" colspan="6">
@@ -73,6 +75,14 @@ attribute odd, which is True for every other item in a tal:repeat loop -->
       <td class="tablevalues" 
           tal:content="python:Bridge.PortStatus==3 and 'Learned (3)' or 'Not
           active (' + str(Bridge.PortStatus) + ')'"/>
+
+      <td class="tablevalues" align="center">
+      <img border="0"
+        tal:attributes="src python:test(Bridge.PortStatus==3,
+            here.getStatusImgSrc(0),
+            here.getStatusImgSrc(3))" />
+      </td>
+
      </tr>
     </tal:block>
     <tr>

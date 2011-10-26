@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:zcml="http://namespaces.zope.org/zcml">
+
+    <configure zcml:condition="installed Products.Zuul">
+
+        <adapter factory=".info.BridgeInterfaceInfo"
+                 for=".BridgeInterface.BridgeInterface"
+                 provides=".interfaces.IBridgeInterfaceInfo"
+                 />
+
+        <browser:resourceDirectory
+                 name="bridge"
+                 directory="resources"
+                 />
+
+
+// Use for in viewlet stanza to  restrict use of bridge.js script JUST to 
+//  devices of class BridgeDevice (and components) in the
+//  BridgeDevice.py object class file ie.  filename.classname
+//       - improves performance
+
+        <browser:viewlet
+                 name="js-bridge"
+                 for=".BridgeDevice.BridgeDevice"
+                 paths="/++resource++bridge/bridge.js"
+                 weight="10"
+                 manager="Products.ZenUI3.browser.interfaces.IJavaScriptSrcManager"
+                 class="Products.ZenUI3.browser.javascript.JavaScriptSrcBundleViewlet"
+                 permission="zope2.Public"
+                 />
+    </configure>
+</configure>
+
+

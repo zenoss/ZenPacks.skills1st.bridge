@@ -20,12 +20,12 @@ class BridgeDevice(Device):
         )
 
     factory_type_information = deepcopy(Device.factory_type_information)
-    factory_type_information[0]['actions'] += (
-            { 'id'              : 'BridgeInt'
-            , 'name'            : 'Bridge Interfaces'
-            , 'action'          : 'BridgeDeviceDetail'
-            , 'permissions'     : (ZEN_VIEW, ) },
-            )
+#    factory_type_information[0]['actions'] += (
+#            { 'id'              : 'BridgeInt'
+#            , 'name'            : 'Bridge Interfaces'
+#            , 'action'          : 'BridgeDeviceDetail'
+#            , 'permissions'     : (ZEN_VIEW, ) },
+#            )
 
 
     def __init__(self, *args, **kw):

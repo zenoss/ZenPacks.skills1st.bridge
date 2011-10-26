@@ -36,6 +36,7 @@ class BridgeInterface(DeviceComponent, ManagedEntity):
     Port = '-1'
     PortIfIndex = 2
     PortStatus = '4'
+    PortComment = 'This is a comment'
     
     #**************END CUSTOM VARIABLES *****************************
     
@@ -45,7 +46,8 @@ class BridgeInterface(DeviceComponent, ManagedEntity):
         {'id':'RemoteAddress', 'type':'string', 'mode':''},
         {'id':'Port', 'type':'string', 'mode':''},
         {'id':'PortIfIndex', 'type':'int', 'mode':''},
-        {'id':'PortStatus', 'type':'string', 'mode':''}
+        {'id':'PortStatus', 'type':'string', 'mode':''},
+        {'id':'PortComment', 'type':'string', 'mode':''}
         )
     #****************
     
@@ -64,7 +66,7 @@ class BridgeInterface(DeviceComponent, ManagedEntity):
             'actions'        :
             ( 
                 { 'id'            : 'status'
-                , 'name'          : 'Bridge Interface Status'
+                , 'name'          : 'Bridge Interface Graphs'
                 , 'action'        : 'viewBridgeInterface'
                 , 'permissions'   : (ZEN_VIEW, )
                 },
@@ -82,14 +84,21 @@ class BridgeInterface(DeviceComponent, ManagedEntity):
           },
         ) 
 
+    isUserCreatedFlag = True
 
+    def isUserCreated(self):
+        """
+        Returns the value of isUserCreated. True adds SAVE & CANCEL buttons to Details menu
+        """
+        return self.isUserCreatedFlag
 
     def viewName(self):
         """Pretty version human readable version of this object"""
         if self.RemoteAddress == '00:00:00:00:00:00' or self.Port == '-1':
             return "Unknown"
         else:
-            return str( self.Port ) + " - " + self.RemoteAddress
+#            return self.id
+            return str( self.Port ) + "-" + self.RemoteAddress
 
 
     # use viewName as titleOrId because that method is used to display a human
@@ -107,7 +116,7 @@ class BridgeInterface(DeviceComponent, ManagedEntity):
         """
         If a bridge channel exists start monitoring it. Because channels are
         very dynamic we will just assume that they should be modeled if they
-        exist. Of cuorse the modeler would need to run very fequently to give
+        exist. Of course the modeler would need to run very fequently to give
         accurate results as to who is talking at any given time. Looks like
         the default timeout on a cisco switch is 5 minutes so the modeler
         would need to run at about that frequency to keep this table accurate.
@@ -132,7 +141,7 @@ class BridgeInterface(DeviceComponent, ManagedEntity):
         """
         return the remote device object for this bridge port. If any are
         returned based on the MAC query we take the first one assuming that
-        MACs are unique to devices (eventhough they aren't on interfaces)
+        MACs are unique to devices (even though they aren't on interfaces)
         """
         intobj = self._getInterfaces()
         if len(intobj) > 0 and intobj[0].device(): 
@@ -155,10 +164,5 @@ class BridgeInterface(DeviceComponent, ManagedEntity):
                             'the index needs to be rebuilt')
         return intobjs
         
-    #THIS FUNCTION IS REQUIRED LEAVE IT BE IF NO RRD INFO IS PRESENT
-    # I don't really understand this -EAD
-    def getRRDNames(self):
-        return []
-
 
 InitializeClass(BridgeInterface)
