@@ -5,7 +5,7 @@
 NAME = "ZenPacks.skills1st.bridge"
 VERSION = "1.0.4"
 AUTHOR = "Jane Curry"
-LICENSE = ""
+LICENSE = "GPLv2"
 NAMESPACE_PACKAGES = ['ZenPacks', 'ZenPacks.skills1st']
 PACKAGES = ['ZenPacks', 'ZenPacks.skills1st', 'ZenPacks.skills1st.bridge']
 INSTALL_REQUIRES = []
